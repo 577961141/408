@@ -13,6 +13,7 @@ typedef struct{
 
 typedef int Status;
 
+/* 插入元素 */
 Status ListInsert(SqList *L, int i, ElemType e) {
     int k;
     if (L->length == MaxSize) {         /* 说明顺序表的元素满了 */
@@ -21,6 +22,11 @@ Status ListInsert(SqList *L, int i, ElemType e) {
     if (i < 1 || i > L->length+1) {     /* 判断i是否在有效范围内 */
         return ERROR;
     }
+
+    // for (k = L->length; k >= i; k--) /* 将要插入位置后的元素向后移一位 */
+    // {
+    //     L->data[k] = L->data[k-1];
+    // }
 
     if (i <= L->length) {               /* 如果插入数据不在表尾 */
         for (k = L->length-1; k >= i - 1; k--) /* 将要插入位置后的元素向后移一位 */
@@ -36,20 +42,21 @@ Status ListInsert(SqList *L, int i, ElemType e) {
     return OK;
 }
 
+/* 删除元素 */
 Status ListDelete(SqList *L, int i, ElemType *e)  
 {
     int k;
-    if (L->length == 0) {
+    if (L->length == 0) {               /* 线性表的数据为空 */
         return ERROR;
     }
 
-    if (i < 1 || i > L->length) {
+    if (i < 1 || i > L->length) {       /* 删除位置不正确 */
         return ERROR;
     }
 
     *e = L->data[i - 1];
-    if (i < L->length) {
-        for (k = i; k < L->length; k++) {
+    if (i < L->length) {                /* 如果删除不是最后的位置 */
+        for (k = i; k < L->length; k++) { /* 将删除位置后继元素前移 */
             L->data[k-1] = L->data[k];
         }
     }
@@ -57,3 +64,13 @@ Status ListDelete(SqList *L, int i, ElemType *e)
     return OK;
 }
 
+/* 查找线性表某个值第一次出现的位序 */
+int LocateElem(SqList L, ElemType e) {
+    int i;
+    for (i = 0; i < L.length; i++) {
+        if (L.data[i] == e) {
+            return i+1;
+        }
+    }
+    return 0;
+}
